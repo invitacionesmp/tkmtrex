@@ -1,0 +1,3 @@
+Pon aquí tus imágenes (por ejemplo fondo.jpg). Luego indica la ruta en js/config.js (background.image).
+rostro-original.png es la foto usada para el rostro; solo es de referencia: lo que se usa es js/rostro-data.js
+(para cambiarlo usa herramientas/crear-rostro.html).

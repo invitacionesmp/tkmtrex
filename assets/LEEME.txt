@@ -1,0 +1,5 @@
+Carpeta de recursos del proyecto:
+  img/    imágenes (fondo, foto original del rostro)
+  audio/  tu música: guarda aquí "musica.mp3" y listo
+  fonts/  tipografías
+Las rutas se configuran en js/config.js

@@ -1,0 +1,3 @@
+PON TU MÚSICA AQUÍ con el nombre:  musica.mp3
+(también vale musica.m4a, musica.ogg o musica.wav).
+No hace falta tocar ningún código: se detecta sola y suena tras el primer toque en la pantalla.

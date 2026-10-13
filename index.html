@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Metadatos para previsualización en WhatsApp y Redes -->
+  <meta property="og:title" content="Una sorpresa especial para ti ❤️">
+  <meta property="og:description" content="Sube el volumen y descubre esta dedicatoria que preparé con mucho cariño...">
+  <meta property="og:image" content="https://invitacionesmp.github.io/tkmtrex/assets/img/miniatura-amor.jpg">
+  <meta property="og:url" content="https://invitacionesmp.github.io/tkmtrex/">
+  <meta property="og:type" content="website">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>Corazón Animado</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main id="stage">
+    <!-- Fondo opcional (imagen). Se configura en js/config.js -->
+    <div id="bg"></div>
+
+    <!-- Aquí se dibuja el corazón / rostro de partículas -->
+    <canvas id="gl"></canvas>
+
+    <!-- Cielo de estrellas (se mezcla sobre el fondo negro) -->
+    <canvas id="stars"></canvas>
+
+    <!-- Texto neón -->
+    <h1 id="title" class="neon">Sos maravilloso TREX, nunca lo olvides</h1>
+
+    <!-- Pista opcional para tocar el corazón (texto en js/config.js -> tapHint) -->
+    <div id="tap" hidden></div>
+
+    <!-- Aviso para activar la música (solo aparece si hay un archivo en assets/audio/) -->
+    <div id="hint" hidden>♪ Toca la pantalla para activar la música</div>
+
+    <!-- Mensaje si el dispositivo no soporta WebGL -->
+    <div id="nogl" hidden>Tu navegador no soporta WebGL.<br>Prueba con Chrome, Edge, Firefox o Safari actualizados.</div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/letra.js"></script>
+  <script src="js/rostro-data.js"></script>
+  <script src="js/estrellas.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

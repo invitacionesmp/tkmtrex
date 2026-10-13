@@ -1,0 +1,157 @@
+/* ==========================================================
+   Corazón de partículas – estilos
+   Los colores del texto se controlan desde js/config.js
+   (variables --neon-core y --neon-glow).
+   ========================================================== */
+
+@font-face {
+  font-family: 'Kalam';
+  src: url('../assets/fonts/kalam-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --neon-core: #8cc4ff;   /* centro claro de las letras */
+  --neon-glow: #1a62ff;   /* resplandor azul            */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#stage {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  overflow: hidden;
+}
+
+/* Imagen de fondo opcional */
+#bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: .55;
+  pointer-events: none;
+}
+
+#gl {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Cielo de estrellas: 'screen' = solo suma luz sobre el negro */
+#stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* ---------- Texto neón ---------- */
+.neon {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: 'Kalam', 'Segoe Script', 'Brush Script MT', 'Snell Roundhand', cursive;
+  font-weight: 400;
+  font-size: 56px;               /* el tamaño real lo ajusta heart.js */
+  line-height: 1.15;
+  letter-spacing: .02em;
+  color: var(--neon-core);
+  text-shadow:
+    0 0 3px  var(--neon-core),
+    0 0 8px  var(--neon-glow),
+    0 0 18px var(--neon-glow),
+    0 0 34px var(--neon-glow),
+    0 0 60px var(--neon-glow);
+  pointer-events: none;
+  opacity: 0;
+  animation: neon-in 2.2s .4s ease forwards, neon-pulse 4.5s 2.6s ease-in-out infinite;
+}
+
+@keyframes neon-in {
+  0%   { opacity: 0; filter: brightness(.6); }
+  45%  { opacity: .55; }
+  55%  { opacity: .25; }
+  70%  { opacity: .9; }
+  100% { opacity: 1; filter: brightness(1); }
+}
+
+@keyframes neon-pulse {
+  0%, 100% { filter: brightness(1);    }
+  50%      { filter: brightness(1.35); }
+}
+
+/* ---------- Avisos ---------- */
+#hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font: 500 13px/1.2 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: #bcd8ff;
+  background: rgba(20, 50, 120, .35);
+  border: 1px solid rgba(90, 160, 255, .35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events: none;
+  animation: hint-pulse 2.4s ease-in-out infinite;
+}
+#hint[hidden] { display: none; }
+
+@keyframes hint-pulse {
+  0%, 100% { opacity: .55; }
+  50%      { opacity: 1; }
+}
+
+#tap {
+  position: absolute;
+  left: 50%;
+  bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  font: 500 14px/1.2 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: .04em;
+  color: var(--neon-core);
+  text-shadow: 0 0 10px var(--neon-glow);
+  pointer-events: none;
+  animation: tap-in 1.6s ease both, hint-pulse 2.4s 1.6s ease-in-out infinite;
+}
+#tap[hidden] { display: none; }
+@keyframes tap-in { from { opacity: 0; } to { opacity: .8; } }
+
+#nogl {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  color: #9cc4ff;
+  font: 16px/1.5 system-ui, sans-serif;
+}
+#nogl[hidden] { display: none; }
