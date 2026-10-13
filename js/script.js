@@ -716,15 +716,29 @@
     function layoutTitle() {
       var top = projectPt(0, 1.06, 0)[1];
       var wL = projectPt(-1.08, 0, 0)[0], wR = projectPt(1.08, 0, 0)[0];
-      var heartW = Math.abs(wR - wL);
-      titleEl.style.fontSize = '100px';
+      var heartW = Math.abs(wR - wL), st = titleEl.style;
+  
+      /* 1) tamaño ideal en UNA línea */
+      st.whiteSpace = 'nowrap'; st.width = 'auto'; st.fontSize = '100px';
       var w100 = titleEl.offsetWidth || 400;
-      var target = Math.min(heartW * 0.86, cssW * 0.9);
-      var fs = clamp(100 * target / w100, 18, 160);
-      titleEl.style.fontSize = fs + 'px';
+      var fs1 = 100 * Math.min(heartW * 0.86, cssW * 0.9) / w100;
+      var fs;
+      if (fs1 >= 36) {
+        fs = clamp(fs1, 18, 160);                            // texto corto: una sola línea, como antes
+        st.fontSize = fs + 'px';
+      } else {
+        /* 2) texto largo: se parte en varias líneas dentro del ancho de la pantalla */
+        var boxW = Math.min(cssW * 0.92, Math.max(heartW * 1.2, 260));
+        st.whiteSpace = 'normal'; st.width = boxW + 'px'; st.textAlign = 'center';
+        fs = Math.min(54, Math.max(26, cssW * 0.075));
+        st.fontSize = fs + 'px';
+        while (fs > 17 && (titleEl.offsetHeight > fs * 1.15 * 3 + 6 || titleEl.scrollWidth > boxW + 2)) {   // máximo 3 líneas
+          fs *= 0.94; st.fontSize = fs + 'px';
+        }
+      }
       var h = titleEl.offsetHeight;
       var y = top - h - fs * 0.12;
-      titleEl.style.top = Math.max(8, y) + 'px';
+      st.top = Math.max(8, y) + 'px';
     }
   
     window.addEventListener('resize', resize);
@@ -748,16 +762,16 @@
       wantAudio = true;
       if (!audio || audioStarted) return;
       audioStarted = true;
-      var p = audio.play();
-      if (p && p.catch) p.catch(function () { audioStarted = false; });
-      hintEl.hidden = true;
+      var a = audio, p = a.play();
+      if (p && p.then) p.then(function () { hintEl.hidden = true; }, function () { if (audio === a) audioStarted = false; });   // si el navegador lo rechaza, se reintenta en el siguiente toque
+      else hintEl.hidden = true;
     }
     (function initMusic() {
       if (!CFG.music) return;
       var main = String(Array.isArray(CFG.music) ? CFG.music[0] : CFG.music);
       var base = main.replace(/\.[^.\/\\]+$/, '');
       var list = Array.isArray(CFG.music) ? CFG.music.slice() : [main];
-      ['mp3', 'm4a', 'ogg', 'wav'].forEach(function (e) { if (list.indexOf(base + '.' + e) < 0) list.push(base + '.' + e); });
+      ['mp3', 'Mp3', 'MP3', 'm4a', 'M4A', 'ogg', 'OGG', 'wav', 'WAV'].forEach(function (e) { if (list.indexOf(base + '.' + e) < 0) list.push(base + '.' + e); });   // acepta también mayúsculas (GitHub/Linux las distinguen)
       var idx = 0;
       (function next() {
         if (idx >= list.length) { audio = null; hintEl.hidden = true; return; }
@@ -840,6 +854,9 @@
     window.addEventListener('pointerleave', function () { ptr.on = false; });
     document.addEventListener('mouseleave', function () { ptr.on = false; });
     window.addEventListener('keydown', startAudio);
+    window.addEventListener('pointerup', startAudio);      // en el celular el permiso de audio llega al levantar el dedo
+    window.addEventListener('touchend', startAudio, { passive: true });
+    window.addEventListener('click', startAudio);
   
     /* ---------------------------------------------------------
        8. ESTADO Y SIMULACIÓN
